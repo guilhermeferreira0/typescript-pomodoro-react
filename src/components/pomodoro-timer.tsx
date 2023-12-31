@@ -23,6 +23,7 @@ export function PomodoroTimer(props: Props): JSX.Element {
   const [timeCounting, setTimeCounting] = useState(false);
   const [working, setWorking] = useState(false);
   const [resting, setResting] = useState(false);
+  const [paused, setPaused] = useState(false);
   const [cyclesQtdManager, setCyclesQtdManager] = useState(
     new Array(props.cycles - 1).fill(true),
   );
@@ -40,12 +41,13 @@ export function PomodoroTimer(props: Props): JSX.Element {
   );
 
   const configureWork = useCallback(() => {
+    setPaused(false);
     setTimeCounting(true);
     setWorking(true);
     setResting(false);
     setMainTime(props.pomodoroTime);
     audioStartWork.play();
-  }, [setWorking, setResting, setMainTime, props.pomodoroTime]);
+  }, [setWorking, setResting, setMainTime, props.pomodoroTime, setPaused]);
 
   const configureTextButton = () => {
     return timeCounting ? 'Pause' : 'Play';
@@ -57,6 +59,7 @@ export function PomodoroTimer(props: Props): JSX.Element {
 
   const configureRest = useCallback(
     (long: boolean) => {
+      setPaused(false);
       setTimeCounting(true);
       setWorking(false);
       setResting(true);
@@ -74,12 +77,20 @@ export function PomodoroTimer(props: Props): JSX.Element {
       setWorking,
       setResting,
       setMainTime,
+      setPaused,
       props.longRestTime,
       props.shortRestTime,
     ],
   );
 
+  const configurePause = () => {
+    setPaused(!paused);
+    setTimeCounting(!timeCounting);
+  };
+
   useEffect(() => {
+    if (paused) document.body.classList.add('paused');
+    if (!paused) document.body.classList.remove('paused');
     if (working) document.body.classList.add('working');
     if (resting) document.body.classList.remove('working');
 
@@ -102,6 +113,7 @@ export function PomodoroTimer(props: Props): JSX.Element {
     cyclesQtdManager,
     numberOfPomodoros,
     completedCycles,
+    paused,
     configureRest,
     setCyclesQtdManager,
     configureWork,
@@ -119,7 +131,7 @@ export function PomodoroTimer(props: Props): JSX.Element {
         <Button
           className={configureClassButton()}
           text={configureTextButton()}
-          onClick={() => setTimeCounting(!timeCounting)}
+          onClick={() => configurePause()}
         />
       </div>
 

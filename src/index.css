@@ -23,6 +23,10 @@ body {
   background-color: #EF5D50;
 }
 
+.paused {
+  background-color: black;
+}
+
 .hidden {
   display: none;
 }
