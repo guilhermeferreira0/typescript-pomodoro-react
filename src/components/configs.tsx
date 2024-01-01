@@ -6,19 +6,13 @@ export function Configs(): JSX.Element {
   const [inputRest, setInputRest] = useState(10);
   const [inputCycles, setInputCycles] = useState(4);
 
-  const handleChangeWork = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const inputId = e.target.id;
     const inputValue = Number(e.target.value);
-    setInputWork(inputValue);
-  };
-
-  const handleChangeRest = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const inputValue = Number(e.target.value);
-    setInputRest(inputValue);
-  };
-
-  const handleChangeCycles = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const inputValue = Number(e.target.value);
-    setInputCycles(inputValue);
+    if (inputId === 'inputWorkConfig') setInputWork(inputValue);
+    else if (inputId === 'inputRestConfig') setInputRest(inputValue);
+    else if (inputId === 'inputCyclesConfig') setInputCycles(inputValue);
+    return;
   };
 
   return (
@@ -38,7 +32,7 @@ export function Configs(): JSX.Element {
             type="number"
             id="inputWorkConfig"
             value={inputWork}
-            onChange={handleChangeWork}
+            onChange={handleChange}
           />
         </label>
 
@@ -48,7 +42,7 @@ export function Configs(): JSX.Element {
             type="number"
             id="inputRestConfig"
             value={inputRest}
-            onChange={handleChangeRest}
+            onChange={handleChange}
           />
         </label>
 
@@ -58,7 +52,7 @@ export function Configs(): JSX.Element {
             type="number"
             id="inputCyclesConfig"
             value={inputCycles}
-            onChange={handleChangeCycles}
+            onChange={handleChange}
           />
         </label>
       </div>
